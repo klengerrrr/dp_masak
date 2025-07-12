@@ -71,12 +71,22 @@
         const form = document.forms['#']
         
         form.addEventListener('submit', e => {
-            e.preventDefault()
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => $("#form_alerts").html("<div class='alert alert-success'>Data berhasil dikirim.</div>"))
-            .catch(error => $("#form_alerts").html("<div class='alert alert-danger'>Data gagal terkirim!.</div>"))
-            form.reset();
-        })
+          e.preventDefault();
+          fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+           .then(response => {
+             $("#form_alerts").html("<div class='alert alert-success'>Data berhasil dikirim.</div>");
+             form.reset();
+             form.querySelector("input, textarea, select")?.focus(); // Fokus ke input pertama
+             setTimeout(() => {
+              $("#form_alerts").html(""); // Hapus alert setelah 3 detik
+         }, 3000);
+       })
+       .catch(error => {
+         $("#form_alerts").html("<div class='alert alert-danger'>Data gagal terkirim!.</div>");
+         setTimeout(() => {
+           $("#form_alerts").html(""); // Hapus alert setelah 2 detik
+       }, 2000);
+    });
     </script>
 
 </body>
